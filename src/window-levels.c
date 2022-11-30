@@ -34,7 +34,8 @@ static int update_levels_controls(void *user_data) {
       else
         int_value = round(value);
 
-      gtk_dial_set_value(GTK_DIAL(meter), int_value);
+      //gtk_dial_set_value(GTK_DIAL(meter), int_value);
+      gtk_level_bar_set_value((GtkLevelBar *) meter, int_value);
       meter_num++;
     }
   }
@@ -103,7 +104,12 @@ GtkWidget *create_levels_controls(struct alsa_card *card) {
         count_labels[j] = add_count_label(grid, j);
 
       // create the meter widget and attach to the grid
-      GtkWidget *meter = gtk_dial_new_with_range(-80, 0, 1);
+      GtkWidget *meter = gtk_level_bar_new_for_interval(-80, 0);
+      gtk_widget_set_size_request(meter, 150, 5);
+      gtk_widget_set_margin_bottom(meter, 2);
+      gtk_widget_set_margin_top(meter, 2);
+      gtk_widget_set_margin_start(meter, 5);
+      gtk_widget_set_margin_end(meter, 5);
       card->meters[meter_num++] = meter;
       gtk_grid_attach(GTK_GRID(grid), meter, j + 1, i + 1, 1, 1);
     }
